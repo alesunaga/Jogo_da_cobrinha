@@ -22,7 +22,7 @@ function criarCobrinha() {
     }
 }
 
-funtion iniciarJogo() {
+function iniciarJogo() {
     criarBG();
     criarCobrinha();
 
@@ -44,5 +44,5 @@ funtion iniciarJogo() {
     snake.unshift(newHead);
 }
 
-let jogo = setInterval (inicarJogo, 100); // taxa de atualização dos frames do jogo em milissegundos
+let jogo = setInterval (iniciarJogo, 100); // taxa de atualização dos frames do jogo em milissegundos
 
