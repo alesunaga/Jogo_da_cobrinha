@@ -9,10 +9,19 @@ snake[0]={
 }
 
 let direction = "right";
+let food = {
+    x: Math.floor(Math.random() * 15 + 1) * box, 
+    y: Math.floor(Math.random() * 15 + 1) * box //gerar números aleatórios sem a parte flutuante - vírgula
+}
 
 function criarBG() {
     context.fillStyle = "lightgreen"; // define a cor do canvas
     context.fillRect(0, 0, 16 * box, 16 * box); // desenha o retângulo no qual o jogo - x, y, altura, largura
+}
+
+function drawFood() { // cria a comidinha
+    context.fillStyle = "red";
+    context.fillRect(food.x, food.y, box, box);
 }
 
 function criarCobrinha() {
@@ -33,21 +42,37 @@ function update (event) { // se o número for 37,38,39, 40 (direita, esquerda, c
 }
 
 function iniciarJogo() {
+
     if(snake[0].x > 15 * box && direction == "right") snake[0].x = 0;
     if(snake[0].x < 0 * box && direction == "left") snake[0].x = 16 * box;
     if(snake[0].y > 15 * box && direction == "down") snake[0].y = 0;
-    if(snake[0].x < 0 * ox && direction == "up") snake[0].y = 16 * box;
+    if(snake[0].y < 0 * box && direction == "up") snake[0].y = 16 * box;
+
+    for(i = 1; i < snake.length; i++) {
+        if(snake[0].x == snake[i].x && snake[0].y == snake[i].y) {
+            clearInterval(jogo);
+            alert('GameOver :(')
+        }
+    }
 
     criarBG();
     criarCobrinha();
+    drawFood();
 
-    let snakeX = skake[0].x; //ajusta as posições iniciais da cobrinha
+    let snakeX = snake[0].x; //ajusta as posições iniciais da cobrinha
     let snakeY = snake[0].y;
 
     if(direction == "right") snakeX += box; //acrescenta 1 quadradinho à direita
     if(direction == "left") snakeX -= box; //decrementa 1 quadradinho à esquerda
     if(direction == "up") snakeY -= box; //decrementa 1 quadradinho para cima
     if(direction == "down") snakeY += box; //decrementa 1 quadradinho para baixo
+
+    if(snakeX != food.x || snakeY != food.y) { //faz a comidinha sumir quando a cobrina encosta nela
+        snake.pop();
+    } else {
+        food.x = Math.floor(Math.random() * 15 + 1) * box, 
+        food.y = Math.floor(Math.random() * 15 + 1) * box;
+    }
 
     snake.pop(); //retira o último elemento do array
 
@@ -59,5 +84,5 @@ function iniciarJogo() {
     snake.unshift(newHead);
 }
 
-let jogo = setInterval (iniciarJogo, 100); // taxa de atualização dos frames do jogo em milissegundos
+let jogo = setInterval (iniciarJogo, 200); // taxa de atualização dos frames do jogo em milissegundos
 
